@@ -5,7 +5,7 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-my-solr-server/
 Tags: solr, search, search results, search integration, custom search, better search, search replacement, category search, comment search, tag search, page search, post search, search highlight, seo
 Requires at least: 3.0.0
 Tested up to: 3.2.1
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 
 A WordPress plugin that help to manage Solr for WordPress plugin connexion to My Solr Server.
 
