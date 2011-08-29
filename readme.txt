@@ -1,4 +1,4 @@
-=== My Solr Server ===
+=== Advanced Search by My Solr Server ===
 Contributors: www.mysolrserver.com
 Author URI: http://www.mysolrserver.com
 Plugin URI: http://wordpress.org/extend/plugins/wp-my-solr-server/
@@ -12,7 +12,7 @@ A WordPress plugin that help to manage Solr for WordPress plugin connexion to My
 
 == Description ==
 
-Solr for WordPress plugin (http://wordpress.org/extend/plugins/solr-for-wordpress/) replaces the default WordPress search with a lot of benefits (see bellow). In order to make Solr for WordPress plugin work, you need a Solr server. If you don’t have the time or resources to install, configure and maintain a Solr search server, My Solr Server do it for you ! 
+Solr for WordPress plugin (http://wordpress.org/extend/plugins/solr-for-wordpress/) replaces the default WordPress search with a lot of benefits (see bellow). In order to make Solr for WordPress plugin work, you need a Solr server. If you don't have the time or resources to install, configure and maintain a Solr search server, My Solr Server do it for you ! 
 
 = What is My Solr Server ? =
 
