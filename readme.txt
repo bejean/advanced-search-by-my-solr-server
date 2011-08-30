@@ -1,7 +1,7 @@
 === Advanced Search by My Solr Server ===
 Contributors: www.mysolrserver.com
 Author URI: http://www.mysolrserver.com
-Plugin URI: http://wordpress.org/extend/plugins/wp-my-solr-server/
+Plugin URI: http://wordpress.org/extend/plugins/advanced-search-by-my-solr-server/
 Tags: solr, search, search results, search integration, custom search, better search, search replacement, category search, comment search, tag search, page search, post search, search highlight, seo
 Requires at least: 3.0.0
 Tested up to: 3.2.1
@@ -46,7 +46,7 @@ Install and activate Solr for WordPress plugin (http://wordpress.org/extend/plug
 
 = Installation =
 
-1. Upload the `wp-my-solr-server` folder to the `/wp-content/plugins/` directory
+1. Upload the `advanced-search-by-my-solr-server` folder to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Go in My Solr Server plugin settings page ("My Solr Server Settings") and configure the plugin with your My Solr Server username and password.
 4. Go in Solr for WordPress plugin settings page ("Solr Options") and load all your posts and/or pages via the "Load All Posts" button in the settings page.
