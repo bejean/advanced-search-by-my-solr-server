@@ -61,4 +61,3 @@ My Solr Server plugin works with WordPress 3.0.0 and greater.
 == Screenshots ==
 
 1. Configuration Page
-
