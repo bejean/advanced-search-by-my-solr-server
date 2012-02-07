@@ -5,7 +5,7 @@ Plugin URI: http://wordpress.org/extend/plugins/advanced-search-by-my-solr-serve
 Tags: solr, search, search results, search integration, custom search, better search, search replacement, category search, comment search, tag search, page search, post search, search highlight, seo
 Requires at least: 3.0.0
 Tested up to: 3.3.1
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 
 
 A WordPress plugin that replaces the default WordPress search with a lot of benefits
@@ -42,6 +42,23 @@ Advanced Search by My Solr Server plugin replaces the default WordPress search. 
 = Prerequisite = 
 
 A Solr server installed and configured with the provided schema.xml file.
+In order to have spell checking work, in the solrconfig.xml file, check :
+
+1. the spellchecker component have to be correctly configured :
+
+    <lst name="spellchecker">
+      <str name="name">default</str>
+      <str name="field">spell</str>
+      <str name="spellcheckIndexDir">spellchecker</str>
+      <str name="buildOnOptimize">true</str>
+    </lst>
+   
+2. the request handler includes the spellchecker component
+
+     <arr name="last-components">
+       <str>spellcheck</str>
+     </arr>  
+    
 If you are using "Solr for Wordpress" plugin, deactivate and uninstall it (in previous version, "Solr for Wordpress" plugin was a pre-requisite).
 
 
@@ -76,6 +93,10 @@ Advanced Search by My Solr Server plugin is tested with "Custom Post Type UI" pl
 
 
 == Changelog ==
+
+= 2.0.1 =
+
+* Update installation prerequisites in order to have spell checking work.
 
 = 2.0.0 =
 
