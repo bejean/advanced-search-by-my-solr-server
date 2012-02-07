@@ -13,13 +13,14 @@ A WordPress plugin that replaces the default WordPress search with a lot of bene
 
 == Description ==
 
-In order to make Solr for WordPress plugin work, you need a Solr server installed and configured with the provided schema.xml file. 
-If you don't have the time or resources to install, configure and maintain a Solr search server, My Solr Server do it for you ! 
+In order to make Advanced Search by My Solr Server plugin work, you need a Solr server installed and configured with the provided schema.xml file. 
+If you don't have the time or resources to install, configure and maintain a Solr server, My Solr Server do it for you ! 
 
 
 = What is My Solr Server ? =
 
-My Solr Server is a Software as a Service Apache Solr enterprise search platform. My Solr Server provides hosted instances of the Apache Solr server. In a couple of minutes, you can create your own Solr server instance, manage it in our manager and integrate it with your favourite CMS by using its standard Solr plugin or module. Wordpress is one of the supported CMS.
+My Solr Server is a Software as a Service Apache Solr enterprise search platform (http://www.mysolrserver.com). My Solr Server provides hosted instances of the Apache Solr server. 
+In a couple of minutes, you can create your own Solr server instance, manage it in our manager and integrate it with your favourite CMS by using its standard Solr plugin or module. Wordpress is one of the supported CMS.
 
 
 = What Advanced Search by My Solr Server plugin does ? =
@@ -41,6 +42,8 @@ Advanced Search by My Solr Server plugin replaces the default WordPress search. 
 = Prerequisite = 
 
 A Solr server installed and configured with the provided schema.xml file.
+If you are using "Solr for Wordpress" plugin, deactivate and uninstall it (in previous version, "Solr for Wordpress" plugin was a pre-requisite).
+
 
 = Installation =
 
@@ -59,14 +62,17 @@ Advanced Search by My Solr Server plugin works with WordPress 3.0.0 and greater.
 
 Advanced Search by My Solr Server plugin works with Solr 1.4.x and 3.x
 
-= How to manage Custom Post type, custom taxonomies and custom fields
+= How to manage Custom Post type, custom taxonomies and custom fields =
 
 Advanced Search by My Solr Server plugin is tested with "Custom Post Type UI" plugin for Custom Post type and custom taxonomies management and with "Custom Field Template" plugin for custom fields management
 
 
 == Screenshots ==
 
-1. Configuration Page
+1. Configuration page
+
+
+2. Configuration page (facets)
 
 
 == Changelog ==
