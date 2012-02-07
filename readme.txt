@@ -98,3 +98,27 @@ Advanced Search by My Solr Server plugin is tested with "Custom Post Type UI" pl
 * Initial version just for My Solr Server connection management.
 * "Solr for Wordpress" plugin is a pre-requisite
 
+
+== Changelog ==
+
+= 2.0.0 =
+
+* Includes all indexing and searching features
+* "Solr for Wordpress" plugin is not a pre-requisite anymore
+* Add support for custom post types and custom taxonomies
+* Settings page refactoring
+* Bug fixing
+
+= 1.0.2 =
+
+* Bug fixing
+
+= 1.0.1 =
+
+* Bug fixing
+
+= 1.0.0 =
+
+* Initial version just for My Solr Server connection management.
+* "Solr for Wordpress" plugin is a pre-requisite
+
