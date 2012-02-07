@@ -46,18 +46,18 @@ In order to have spell checking work, in the solrconfig.xml file, check :
 
 1. the spellchecker component have to be correctly configured :
 
-    <lst name="spellchecker">
-      <str name="name">default</str>
-      <str name="field">spell</str>
-      <str name="spellcheckIndexDir">spellchecker</str>
-      <str name="buildOnOptimize">true</str>
-    </lst>
+    &lt;lst name="spellchecker"&gt;
+      &lt;str name="name">default&lt;/str&gt;
+      &lt;str name="field">spell&lt;/str&gt;
+      &lt;str name="spellcheckIndexDir"&gt;spellchecker&lt;/str&gt;
+      &lt;str name="buildOnOptimize"&gt;true&lt;/str&gt;
+    &lt;/lst&gt;
    
 2. the request handler includes the spellchecker component
 
-     <arr name="last-components">
-       <str>spellcheck</str>
-     </arr>  
+     &lt;arr name="last-components"&gt;
+       &lt;str&gt;spellcheck&lt;/str&gt;
+     &lt;/arr&gt;  
     
 If you are using "Solr for Wordpress" plugin, deactivate and uninstall it (in previous version, "Solr for Wordpress" plugin was a pre-requisite).
 
