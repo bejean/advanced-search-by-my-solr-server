@@ -329,6 +329,7 @@ function mss_query( $qry, $offset, $count, $fq, $sortby, $options) {
 		//}
 
 		$response = $solr->search($qry, $offset, $count, $params);
+		//print($response->getRawResponse());
 		if ( ! $response->getHttpStatus() == 200 ) {
 			$response = NULL;
 		}
