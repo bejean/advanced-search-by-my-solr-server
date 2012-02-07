@@ -79,7 +79,7 @@ Advanced Search by My Solr Server plugin works with WordPress 3.0.0 and greater.
 
 Advanced Search by My Solr Server plugin works with Solr 1.4.x and 3.x
 
-= How to manage Custom Post type, custom taxonomies and custom fields =
+= How to manage Custom Post type, custom taxonomies and custom fields? =
 
 Advanced Search by My Solr Server plugin is tested with "Custom Post Type UI" plugin for Custom Post type and custom taxonomies management and with "Custom Field Template" plugin for custom fields management
 
@@ -97,30 +97,6 @@ Advanced Search by My Solr Server plugin is tested with "Custom Post Type UI" pl
 = 2.0.1 =
 
 * Update installation prerequisites in order to have spell checking work.
-
-= 2.0.0 =
-
-* Includes all indexing and searching features
-* "Solr for Wordpress" plugin is not a pre-requisite anymore
-* Add support for custom post types and custom taxonomies
-* Settings page refactoring
-* Bug fixing
-
-= 1.0.2 =
-
-* Bug fixing
-
-= 1.0.1 =
-
-* Bug fixing
-
-= 1.0.0 =
-
-* Initial version just for My Solr Server connection management.
-* "Solr for Wordpress" plugin is a pre-requisite
-
-
-== Changelog ==
 
 = 2.0.0 =
 
