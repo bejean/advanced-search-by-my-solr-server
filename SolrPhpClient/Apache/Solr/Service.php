@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2007-2011, Servigistics, Inc.
+ * Copyright (c) 2007-2012, Parametric Technology Corporation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,13 +27,13 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @copyright Copyright 2007-2011 Servigistics, Inc. (http://servigistics.com)
+ * @copyright Copyright 2007-2012 Parametric Technology Corporation (http://ptc.com)
  * @license http://solr-php-client.googlecode.com/svn/trunk/COPYING New BSD
- * @version $Id: Service.php 59 2011-02-08 20:38:59Z donovan.jimenez $
+ * @version $Id$
  *
  * @package Apache
  * @subpackage Solr
- * @author Donovan Jimenez <djimenez@conduit-it.com>
+ * @author Donovan Jimenez
  */
 
 // See Issue #1 (http://code.google.com/p/solr-php-client/issues/detail?id=1)
@@ -51,49 +51,48 @@ require_once(dirname(__FILE__) . '/HttpTransport/Interface.php');
  * Starting point for the Solr API. Represents a Solr server resource and has
  * methods for pinging, adding, deleting, committing, optimizing and searching.
  *
- * Example Usage:
+ * Example Usage (see also http://code.google.com/p/solr-php-client/wiki/ExampleUsage):
  * <code>
  * ...
  * $solr = new Apache_Solr_Service(); //or explicitly new Apache_Solr_Service('localhost', 8180, '/solr')
  *
- * if ($solr->ping())
- * {
- * 		$solr->deleteByQuery('*:*'); //deletes ALL documents - be careful :)
+ * $solr->deleteByQuery('*:*'); //deletes ALL documents - be careful :)
  *
- * 		$document = new Apache_Solr_Document();
- * 		$document->id = uniqid(); //or something else suitably unique
+ * $document = new Apache_Solr_Document();
+ * $document->id = uniqid(); //or something else suitably unique
  *
- * 		$document->title = 'Some Title';
- * 		$document->content = 'Some content for this wonderful document. Blah blah blah.';
+ * $document->title = 'Some Title';
+ * $document->content = 'Some content for this wonderful document. Blah blah blah.';
  *
- * 		$solr->addDocument($document); 	//if you're going to be adding documents in bulk using addDocuments
+ * $solr->addDocument($document); 	//if you're going to be adding documents in bulk using addDocuments
  * 										//with an array of documents is faster
  *
- * 		$solr->commit(); //commit to see the deletes and the document
- * 		$solr->optimize(); //merges multiple segments into one
+ * $solr->commit(); //commit to see the deletes and the document
+ * $solr->optimize(); //merges multiple segments into one
  *
- * 		//and the one we all care about, search!
- * 		//any other common or custom parameters to the request handler can go in the
- * 		//optional 4th array argument.
- * 		$solr->search('content:blah', 0, 10, array('sort' => 'timestamp desc'));
- * }
+ * //and the one we all care about, search!
+ * //any other common or custom parameters to the request handler can go in the
+ * //optional 4th array argument.
+ * $solr->search('content:blah', 0, 10, array('sort' => 'timestamp desc'));
  * ...
  * </code>
- *
- * @todo Investigate using other HTTP clients other than file_get_contents built-in handler. Could provide performance
- * improvements when dealing with multiple requests by using HTTP's keep alive functionality
  */
 class Apache_Solr_Service
 {
 	/**
 	 * SVN Revision meta data for this class
 	 */
-	const SVN_REVISION = '$Revision: 59 $';
+	const SVN_REVISION = '$Revision$';
 
 	/**
 	 * SVN ID meta data for this class
 	 */
-	const SVN_ID = '$Id: Service.php 59 2011-02-08 20:38:59Z donovan.jimenez $';
+	const SVN_ID = '$Id$';
+
+	/**
+	 * SVN HeadURL meta data for this class
+	 */
+	const SVN_URL = '$HeadURL$';
 
 	/**
 	 * Response writer we'll request - JSON. See http://code.google.com/p/solr-php-client/issues/detail?id=6#c1 for reasoning
@@ -118,6 +117,7 @@ class Apache_Solr_Service
 	const PING_SERVLET = 'admin/ping';
 	const UPDATE_SERVLET = 'update';
 	const SEARCH_SERVLET = 'select';
+	const SYSTEM_SERVLET = 'admin/system';
 	const THREADS_SERVLET = 'admin/threads';
 	const EXTRACT_SERVLET = 'update/extract';
 
@@ -165,7 +165,7 @@ class Apache_Solr_Service
 	 *
 	 * @var string
 	 */
-	protected $_pingUrl, $_updateUrl, $_searchUrl, $_threadsUrl;
+	protected $_pingUrl, $_updateUrl, $_searchUrl, $_systemUrl, $_threadsUrl;
 
 	/**
 	 * Keep track of whether our URLs have been constructed
@@ -286,6 +286,7 @@ class Apache_Solr_Service
 		$this->_extractUrl = $this->_constructUrl(self::EXTRACT_SERVLET);
 		$this->_pingUrl = $this->_constructUrl(self::PING_SERVLET);
 		$this->_searchUrl = $this->_constructUrl(self::SEARCH_SERVLET);
+		$this->_systemUrl = $this->_constructUrl(self::SYSTEM_SERVLET, array('wt' => self::SOLR_WRITER));
 		$this->_threadsUrl = $this->_constructUrl(self::THREADS_SERVLET, array('wt' => self::SOLR_WRITER ));
 		$this->_updateUrl = $this->_constructUrl(self::UPDATE_SERVLET, array('wt' => self::SOLR_WRITER ));
 
@@ -458,7 +459,14 @@ class Apache_Solr_Service
 	{
 		$path = trim($path, '/');
 
-		$this->_path = '/' . $path . '/';
+		if (strlen($path) > 0)
+		{
+			$this->_path = '/' . $path . '/';
+		}
+		else
+		{
+			$this->_path = '/';
+		}
 
 		if ($this->_urlsInited)
 		{
@@ -559,6 +567,28 @@ class Apache_Solr_Service
 	{
 		$this->getHttpTransport()->setDefaultTimeout($timeout);
 	}
+	
+	/**
+	 * Convenience method to set authentication credentials on the current HTTP transport implementation
+	 * 
+	 * @param string $username
+	 * @param string $password
+	 */
+	public function setAuthenticationCredentials($username, $password)
+	{
+		$this->getHttpTransport()->setAuthenticationCredentials($username, $password);
+	}
+
+	/**
+	 * Convenience method to set proxy
+	 * 
+	 * @param string $username
+	 * @param string $password
+	 */
+	public function setProxy($proxy, $port, $username = '', $password = '')
+	{
+		$this->getHttpTransport()->setProxy($proxy, $port, $username, $password);
+	}
 
 	/**
 	 * Set how NamedLists should be formatted in the response data. This mainly effects
@@ -640,6 +670,18 @@ class Apache_Solr_Service
 		{
 			return false;
 		}
+	}
+	
+	/**
+	 * Call the /admin/system servlet and retrieve system information about Solr
+	 * 
+	 * @return Apache_Solr_Response
+	 *
+	 * @throws Apache_Solr_HttpTransportException If an error occurs during the service call
+	 */
+	public function system()
+	{
+		return $this->_sendRawGet($this->_systemUrl);
 	}
 
 	/**
@@ -751,8 +793,8 @@ class Apache_Solr_Service
 
 		foreach ($document as $key => $value)
 		{
-			$key = htmlspecialchars($key, ENT_QUOTES, 'UTF-8');
 			$fieldBoost = $document->getFieldBoost($key);
+			$key = htmlspecialchars($key, ENT_QUOTES, 'UTF-8');
 
 			if (is_array($value))
 			{
