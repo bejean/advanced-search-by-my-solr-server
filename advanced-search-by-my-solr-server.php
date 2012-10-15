@@ -3,7 +3,7 @@
  Plugin Name: Advanced Search by My Solr Server
 Plugin URI: http://wordpress.org/extend/plugins/advanced-search-by-my-solr-server/
 Description: Indexes, removes, and updates documents in the Solr search engine.
-Version: 2.0.2
+Version: 2.0.3
 Author: www.mysolrserver.com
 Author URI: http://www.mysolrserver.com
 */
@@ -244,8 +244,13 @@ function mss_admin_head() {
         $('[name=mss_btn_connect]').click(function() {
 			var name = $('#mss_id').val();
 			var passwd = $('#mss_passwd').val();
-  
-     	    $.get(ajax_url, {action: 'accountgetinfo', name: name, passwd : passwd }, 
+
+			var proxy = $('#mss_solr_proxy').val();
+			var proxyport = $('#mss_solr_proxyport').val();
+			var proxyusername = $('#mss_solr_proxyusername').val();
+			var proxypassword = $('#mss_solr_proxypassword').val();
+			
+     	    $.get(ajax_url, {action: 'accountgetinfo', name: name, passwd: passwd, proxy: proxy, proxyport: proxyport, proxyusername: proxyusername, proxypassword: proxypassword }, 
         		function(data) {
      	    		var resp = JSON.parse(data);
 					if (resp.status == 'ok') {
@@ -298,8 +303,8 @@ function mss_admin_head() {
 			var name = $('#mss_id').val();
 			var passwd = $('#mss_passwd').val();
 			var url = $('#mss_instances').val();
-  
-     	    $.get(ajax_url, {action: 'save', name: name, passwd : passwd, url : url }, 
+
+			$.get(ajax_url, {action: 'save', name: name, passwd: passwd, url: url }, 
         		function(data) {
      	    		var resp = JSON.parse(data);
 					if (resp.status == 'ok') {
@@ -314,6 +319,29 @@ function mss_admin_head() {
             return false;     
         });       
 
+    	$('[name=mss_btn_save_proxy]').click(function() {        	
+  
+			var proxy = $('#mss_solr_proxy').val();
+			var proxyport = $('#mss_solr_proxyport').val();
+			var proxyusername = $('#mss_solr_proxyusername').val();
+			var proxypassword = $('#mss_solr_proxypassword').val();
+
+			$.get(ajax_url, {action: 'save_proxy', proxy: proxy, proxyport: proxyport, proxyusername: proxyusername, proxypassword: proxypassword }, 
+        		function(data) {
+     	    		var resp = JSON.parse(data);
+					if (resp.status == 'ok') {
+						$('#mss_save_proxy_status').html('&nbsp;<img src="<?php print $this_plugin_dir_url; ?>images/success.png">');
+						setTimeout("clearSaveStatus('#mss_save_proxy_status')",1000);
+					}
+					else {
+						$('#mss_save_proxy_status').html('&nbsp;<img src="<?php print $this_plugin_dir_url; ?>images/warning.png">');
+					}
+        		});
+        	
+            return false;     
+        });       
+
+    	
     	$('[name=mss_btn_save_options]').click(function() {
   
        		$('#mss_save_option_status').html('&nbsp;<img src="<?php print $this_plugin_dir_url; ?>images/ajax-circle.gif">');
@@ -441,6 +469,10 @@ function mss_admin_head() {
 </script>
 
 
+
+
+
+
 <?php
 }
 
@@ -450,33 +482,57 @@ add_action('admin_head', 'mss_admin_head');
 function mss_default_head() {
 	global $this_plugin_dir_url;
 
-	if (file_exists(TEMPLATEPATH . '/mss_search.css')) {
+	// 	if (file_exists(TEMPLATEPATH . '/mss_search.css')) {
+	// 		// use theme file
+	// 		printf(__("<link rel=\"stylesheet\" href=\"%s\" type=\"text/css\" media=\"screen\" />\n"), bloginfo('template_url') . '/mss_search.css');
+	// 	} else if (file_exists(dirname(__FILE__) . '/template/mss_search.css')) {
+	// 		// use plugin supplied file
+	// 		printf(__("<link rel=\"stylesheet\" href=\"%s\" type=\"text/css\" media=\"screen\" />\n"), $this_plugin_dir_url . 'template/mss_search.css');
+	// 	}
+
+	if (file_exists(TEMPLATEPATH . '/mss_search_custom.css')) {
 		// use theme file
-		printf(__("<link rel=\"stylesheet\" href=\"%s\" type=\"text/css\" media=\"screen\" />\n"), bloginfo(template_url) . '/mss_search.css');
+		printf(__("<link rel=\"stylesheet\" href=\"%s\" type=\"text/css\" media=\"screen\" />\n"), get_template_directory_uri() . '/mss_search_custom.css');
+	} else if (file_exists(dirname(__FILE__) . '/template/mss_search_custom.css')) {
+		// use plugin custom file
+		printf(__("<link rel=\"stylesheet\" href=\"%s\" type=\"text/css\" media=\"screen\" />\n"), this_plugin_dir_url . 'template/mss_search_custom.css');
 	} else if (file_exists(dirname(__FILE__) . '/template/mss_search.css')) {
 		// use plugin supplied file
 		printf(__("<link rel=\"stylesheet\" href=\"%s\" type=\"text/css\" media=\"screen\" />\n"), $this_plugin_dir_url . 'template/mss_search.css');
 	}
+
+
 }
 
 function mss_autosuggest_head() {
 	global $this_plugin_dir_url;
 
-	if (file_exists(TEMPLATEPATH . '/mss_autocomplete.css')) {
+	// 	if (file_exists(TEMPLATEPATH . '/mss_autocomplete.css')) {
+	// 		// use theme file
+	// 		printf(__("<link rel=\"stylesheet\" href=\"%s\" type=\"text/css\" media=\"screen\" />\n"), bloginfo('template_url') . '/mss_autocomplete.css');
+	// 	} else if (file_exists(dirname(__FILE__) . '/template/mss_autocomplete.css')) {
+	// 		// use plugin supplied file
+	// 		printf(__("<link rel=\"stylesheet\" href=\"%s\" type=\"text/css\" media=\"screen\" />\n"), $this_plugin_dir_url . 'template/mss_autocomplete.css');
+	// 	}
+
+	if (file_exists(TEMPLATEPATH . '/mss_autocomplete_custom.css')) {
 		// use theme file
-		printf(__("<link rel=\"stylesheet\" href=\"%s\" type=\"text/css\" media=\"screen\" />\n"), bloginfo(template_url) . '/mss_autocomplete.css');
+		printf(__("<link rel=\"stylesheet\" href=\"%s\" type=\"text/css\" media=\"screen\" />\n"), get_template_directory_uri() . '/mss_autocomplete_custom.css');
+	} else if (file_exists(dirname(__FILE__) . '/template/mss_autocomplete_custom.css')) {
+		// use plugin custom file
+		printf(__("<link rel=\"stylesheet\" href=\"%s\" type=\"text/css\" media=\"screen\" />\n"), $this_plugin_dir_url . 'template/mss_autocomplete_custom.css');
 	} else if (file_exists(dirname(__FILE__) . '/template/mss_autocomplete.css')) {
 		// use plugin supplied file
 		printf(__("<link rel=\"stylesheet\" href=\"%s\" type=\"text/css\" media=\"screen\" />\n"), $this_plugin_dir_url . 'template/mss_autocomplete.css');
 	}
+
 	?>
 <script type="text/javascript">
     jQuery(document).ready(function($) {
-        $("#s").suggest("?method=autocomplete",{});
-        $("#qrybox").suggest("?method=autocomplete",{});
+        jQuery("#s").suggest("?method=autocomplete",{});
+        jQuery("#qrybox").suggest("?method=autocomplete",{});
     });
 </script>
-
 
 
 <?php
@@ -502,9 +558,27 @@ function mss_template_redirect() {
 	}
 
 	// If there is a template file then we use it
-	if (file_exists(TEMPLATEPATH . '/mss_search.php')) {
+	// 	if (file_exists(TEMPLATEPATH . '/mss_search.php')) {
+	// 		// use theme file
+	// 		include_once(TEMPLATEPATH . '/mss_search.php');
+	// 	} else if (file_exists(dirname(__FILE__) . '/template/mss_search.php')) {
+	// 		// use plugin supplied file
+	// 		add_action('wp_head', 'mss_default_head');
+	// 		include_once(dirname(__FILE__) . '/template/mss_search.php');
+	// 	} else {
+	// 		// no template files found, just continue on like normal
+	// 		// this should get to the normal WordPress search results
+	// 		return;
+	// 	}
+
+	if (file_exists(TEMPLATEPATH . '/mss_search_custom.php')) {
 		// use theme file
-		include_once(TEMPLATEPATH . '/mss_search.php');
+		add_action('wp_head', 'mss_default_head');
+		include_once(TEMPLATEPATH . '/mss_search_custom.php');
+	} else if (file_exists(dirname(__FILE__) . '/template/mss_search_custom.php')) {
+		// use plugin custom file
+		add_action('wp_head', 'mss_default_head');
+		include_once(dirname(__FILE__) . '/template/mss_search_custom.php');
 	} else if (file_exists(dirname(__FILE__) . '/template/mss_search.php')) {
 		// use plugin supplied file
 		add_action('wp_head', 'mss_default_head');
@@ -889,7 +963,12 @@ function mss_options_init() {
 		$name = POSTGET("name");
 		$passwd = POSTGET("passwd");
 
-		print ($account_info_json = getMssAccountInfo($url_mysolrserver, $url_extraparam, $name, $passwd));
+		$proxy=POSTGET("proxy");
+		$proxyport=POSTGET("proxyport");
+		$proxyusername=POSTGET("proxyusername");
+		$proxypassword=POSTGET("proxypassword");
+		
+		print ($account_info_json = getMssAccountInfo($url_mysolrserver, $url_extraparam, $name, $passwd, $proxy, $proxyport, $proxyusername, $proxypassword));
 		exit();
 	}
 
@@ -920,59 +999,82 @@ function mss_options_init() {
 		print(json_encode($arr));
 		exit();
 	}
-
-	if ($action=="saveall") {
+	
+	if ($action=="save_proxy") {
 		$options = mss_get_option();
 
-		$options['mss_id']=$_POST['settings']['mss_id'];
-		$options['mss_passwd']=$_POST['settings']['mss_passwd'];
-		$options['mss_url']=$_POST['settings']['mss_url'];
-
-		if ($_POST['settings']['mss_connect_type']=='mysolrserver') {
-
-			// update mss parameters
-			$u = parse_url($options['mss_url']);
-			if ($u) {
-				$port = (!isset($u['port']) || $u['port']=="") ? "80" : $u['port'];
-				if ($u['host']=="") $port = "";
-
-				$options['mss_solr_host']=$u['host'];
-				$options['mss_solr_port']=$port;
-				$options['mss_solr_path']=$u['path'];
-			}
-		}
-
-		// lets loop through our options already in database
-		foreach ($options as $option => $old_value ) {
-			if (!(($_POST['settings']['mss_connect_type']=='mysolrserver') && ($option == 'mss_solr_host' || $option == 'mss_solr_port' || $option == 'mss_solr_path'))) {
-				if ($option == 'mss_index_all_sites' || $option == 'mss_solr_initialized') {
-					$value = trim($old_value);
-				} else {
-					if (isset($_POST['settings'][$option]))
-					$value = $_POST['settings'][$option];
-					else
-					$value = '';
-				}
-				if ($option == 'mss_passwd') $value=encrypt($value);
-				if ( !is_array($value) ) $value = trim($value);
-				$value = stripslashes_deep($value);
-				$options[$option] = $value;
-			}
-		}
-
-		// lets loops to the posted options $_POST['settings'] and eventualy add new created options (plugin upgrade)
-		foreach ($_POST['settings'] as $option => $value ) {
-			if (!isset($options[$option]))
-			$options[$option] = $value;
-		}
-
+	
+		$options['mss_solr_proxy']=POSTGET("proxy");
+		$options['mss_solr_proxyport']=POSTGET("proxyport");
+		$options['mss_solr_proxyusername']=POSTGET("proxyusername");
+		$options['mss_solr_proxypassword']=encrypt(POSTGET("proxypassword"));
+	
 		mss_update_option($options);
-
+	
 		$arr = array();
 		$arr['status']='ok';
 		print(json_encode($arr));
 		exit();
 	}
+
+		if ($action=="saveall") {
+			$options = mss_get_option();
+
+			$options['mss_id']=$_POST['settings']['mss_id'];
+			$options['mss_passwd']=$_POST['settings']['mss_passwd'];
+			$options['mss_url']=$_POST['settings']['mss_url'];
+
+ 			$options['mss_solr_proxy']=$_POST['settings']['mss_solr_proxy'];
+ 			$options['mss_solr_proxyport']=$_POST['settings']['mss_solr_proxyport'];
+ 			$options['mss_solr_proxyusername']=$_POST['settings']['mss_solr_proxyusername'];
+ 			$options['mss_solr_proxypassword']=$_POST['settings']['mss_solr_proxypassword'];
+			
+			if ($_POST['settings']['mss_connect_type']=='mysolrserver') {
+
+				// update mss parameters
+				$u = parse_url($options['mss_url']);
+				if ($u) {
+					$port = (!isset($u['port']) || $u['port']=="") ? "80" : $u['port'];
+					if ($u['host']=="") $port = "";
+
+					$options['mss_solr_host']=$u['host'];
+					$options['mss_solr_port']=$port;
+					$options['mss_solr_path']=$u['path'];
+				}
+			}
+
+			// lets loop through our options already in database
+			foreach ($options as $option => $old_value ) {
+				if (!(($_POST['settings']['mss_connect_type']=='mysolrserver') && ($option == 'mss_solr_host' || $option == 'mss_solr_port' || $option == 'mss_solr_path'))) {
+					if ($option == 'mss_index_all_sites' || $option == 'mss_solr_initialized') {
+						$value = trim($old_value);
+					} else {
+						if (isset($_POST['settings'][$option]))
+						$value = $_POST['settings'][$option];
+						else
+						$value = '';
+					}
+					if ($option == 'mss_passwd') $value=encrypt($value);
+					if ($option == 'mss_solr_proxypassword') $value=encrypt($value);
+					if ( !is_array($value) ) $value = trim($value);
+					$value = stripslashes_deep($value);
+					$options[$option] = $value;
+				}
+			}
+
+			// lets loops to the posted options $_POST['settings'] and eventualy add new created options (plugin upgrade)
+			foreach ($_POST['settings'] as $option => $value ) {
+				if (!isset($options[$option]))
+				$options[$option] = $value;
+			}
+
+			mss_update_option($options);
+
+			$arr = array();
+			$arr['status']='ok';
+			print(json_encode($arr));
+			exit();
+		}
 
 	if ($action=="ping") {
 		$options = mss_get_option();
@@ -1041,15 +1143,15 @@ function mss_options_init() {
 		mss_load_all($options, $prev);
 		exit();
 	}
-}
+	}
 
-add_action( 'template_redirect', 'mss_template_redirect', 1 );
-add_action( 'publish_post', 'mss_handle_modified' );
-add_action( 'publish_page', 'mss_handle_modified' );
-add_action( 'save_post', 'mss_handle_save' );
-add_action( 'edit_post', 'mss_handle_status_change' );
-add_action( 'delete_post', 'mss_handle_delete' );
-add_action( 'admin_init', 'mss_options_init');
+	add_action( 'template_redirect', 'mss_template_redirect', 1 );
+	add_action( 'publish_post', 'mss_handle_modified' );
+	add_action( 'publish_page', 'mss_handle_modified' );
+	add_action( 'save_post', 'mss_handle_save' );
+	add_action( 'edit_post', 'mss_handle_status_change' );
+	add_action( 'delete_post', 'mss_handle_delete' );
+	add_action( 'admin_init', 'mss_options_init');
 
-add_action( 'wp_head', 'mss_autosuggest_head');
-?>
+	add_action( 'wp_head', 'mss_autosuggest_head');
+	?>
