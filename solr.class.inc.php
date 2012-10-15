@@ -37,6 +37,11 @@ Class Mss_Solr {
 			require_once("SolrPhpClient/Apache/Solr/HttpTransport/Curl.php");			
 			$httpTransport = new Apache_Solr_HttpTransport_Curl();
 			$this->_solr = new Apache_Solr_Service($this->_solrHost, $this->_solrPort, $this->_solrPath, $httpTransport);
+			
+			if ($options['mss_solr_proxy']!='' && $options['mss_solr_proxyport']!='') {
+				$this->_solr->setProxy($options['mss_solr_proxy'], $options['mss_solr_proxyport'], $options['mss_slor_proxyusername'], decrypt($options['mss_solr_proxypassword']));
+			}
+			
 		} catch ( Exception $e ) {
 			$this->_lastErrorCode = $e->getCode();
 			$this->_lastErrorMessage = $e->getMessage();
