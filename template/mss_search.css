@@ -1,0 +1,255 @@
+#content {
+	width: auto !important;
+}
+
+*+ html clearfix {
+	display: inline-block !important;
+}
+*+ html ul,ol {
+	list-style-position: outside !important;
+}
+
+
+.solr * {
+	line-height: 1 !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	text-align: left !important;
+}
+.solr ol, .solr ul, .solr ol li, .solr ul li {
+	background: none !important;
+	list-style-type: none !important;
+	overflow: hidden !important; /* IE7 */
+}
+.solr h2 {font-size:16px !important;}
+.solr h3 {font-size:14px !important;}
+.solr {
+	font-size: 12px !important;
+	line-height: 1 !important;
+	margin: 0 !important;
+	padding: 20px !important;
+	width: auto !important;
+}
+div.solr1 {
+	border-bottom: 1px solid #cccccc !important;
+	padding: 0 0 6px !important;
+}
+div.solr_search {
+	clear: both !important;
+	padding: 0 0 12px !important;
+}
+div.solr_search input {
+	font-size: 18px !important;
+}
+.solr_field {
+	border: 1px solid #b7b7b7 !important;
+	border-top: 2px solid #999999 !important;
+	padding: 3px !important;
+	margin: 0 8px 0 0 !important;
+	width: 330px !important;
+}
+ol.solr_auto {
+	background: #ffffff !important;
+	border: 1px solid #b7b7b7 !important;
+	width: 336px !important;
+	padding: 6px 0 !important;
+	position: absolute !important;
+	clear: both !important; /* IE6 */
+	z-index: 100 !important;
+}
+.solr_auto li {
+	padding: 2px 8px !important;
+}
+.solr_auto li:hover {
+	background: #efffb0 !important;
+}
+div.solr_suggest {
+	padding: 0 0 5px !important;
+}
+label.solr_response {
+	font-size: 10px !important;
+	color: #666666 !important;
+	float: right !important;
+	position: relative !important;
+	top: 13px !important;
+}
+div.solr3 {
+	float: left !important;
+	padding: 18px 2% 0 0 !important;
+	width: 23% !important;
+}
+.solr_active span {
+	border-top: 4px solid #ffffff !important;
+	border-left: 5px solid #999999 !important;
+	border-bottom: 4px solid #ffffff !important;
+	font-size: 0 !important;
+	line-height: 0 !important;
+	width: 0 !important;
+	margin: 0 4px 0 0 !important;
+	position: relative !important;
+	bottom: 4px !important;
+	zoom: 1 !important; /* IE7 */
+}
+.solr_active b {
+	font-family: Arial, Verdana, Helvetica, sans-serif !important;
+	font-weight: bold !important;
+	color: #999999 !important;
+}
+.solr_active a {
+	text-decoration: none !important;
+}
+.solr_facets ol li {
+	padding: 3px 0 3px !important;
+}
+.solr_facets ol li ol {
+	padding: 3px 0 0 10px !important;
+}
+.solr_facets h3 {
+	padding: 10px 0 3px !important;
+}
+.solr_active ol li {
+	padding: 3px 0 !important;
+}
+.solr_active a {
+	color: #000000 !important;
+}
+div.solr2 {
+	float: right !important;
+	padding: 8px 0 0 !important;
+	width: 70% !important;
+}
+div.solr2_nofacets {
+	padding: 8px 0 0 !important;
+	width: 100% !important;
+}
+div.solr_results_header {
+	font-size: 10px !important;
+	color: #666666 !important;
+	padding: 0 0 4px !important;
+}
+div.solr_results_headerL {
+	width: 55% !important;
+	float: left !important;
+	padding: 0 0 0 12px !important;
+}
+div.solr_results_headerR {
+	width: 40% !important;
+	font-weight: bold !important;
+	float: right !important;
+}
+.solr_sort {
+	margin: 4px 4px 0 0 !important;
+	float: right !important;
+}
+ol.solr_sort2 {
+	background: #ffffff !important;
+	text-decoration: none !important;
+	border: 1px solid #cccccc !important;
+	padding: 2px 0 1px !important;
+	float: right !important;
+}
+.solr_sort2 li {
+	display: block !important; /* FF3 */
+	padding: 2px 2px 2px 4px !important;
+}
+.solr_sort2 li:hover {
+	background: #efffb0 !important;
+}
+.solr_sort2 a {
+	text-decoration: none !important;
+}
+.solr_sort_drop span {
+	border-top: 4px solid #999999 !important;
+	border-right: 4px solid #ffffff !important;
+	border-left: 5px solid #ffffff !important;
+	font-size: 0 !important;
+	line-height: 0 !important;
+	width: 0 !important;
+	margin: 0 0 0 2px !important;
+	position: relative !important;
+	bottom: 1px !important;
+	zoom: 1 !important; /* IE7 */
+}
+
+.solr_results ol {
+	font-size: 12px !important;
+	padding: 0 0 14px !important;
+	clear: both !important; /* IE7 */
+}
+.solr_results li {
+	border-bottom: 1px solid #e6e6e6 !important;
+	padding: 14px 12px !important;
+}
+.solr_results li:hover {
+	background: #efffb0 !important;
+}
+.solr_results img {
+	height: 50px !important;
+	border: 1px solid #cccccc !important;
+	float: right !important;
+	display: block;
+	margin: 0 0 0 5px !important;
+}
+.solr_results h2 {
+	font-weight: normal !important;
+	line-height: 1.1 !important;
+	padding: 0 0 5px !important;
+}
+.solr_results label {
+	font-size: 10px !important;
+	color: #666666 !important;
+	padding: 5px 0 0 !important;
+	display: block !important;
+}
+.solr_pages {
+	font-size: 14px !important;
+	font-weight: bold !important;
+	text-align: right !important;
+}
+.solr_pages a {
+	margin: 0 0 0 5px !important;
+}
+.solr_pages_on {
+	color: #000000 !important;
+}
+div.solr_noresult {
+	padding: 20px 5% 40px 0 !important;
+}
+.solr_noresult h2 {
+	font-weight: normal !important;
+	line-height: 1.2 !important;
+	padding: 0 0 14px !important;
+}
+.solr_noresult h3 {
+	font-weight: normal !important;
+	line-height: 1.2 !important;
+	padding: 0 0 14px !important;
+}
+.solr_noresult p {
+	font-weight: normal !important;
+	line-height: 1.2 !important;
+}
+
+
+.solr_HL {
+	background: #efffb0 !important;
+}
+
+
+/*CLEARFIX*/
+.clearfix:after {
+	content: " ";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+	font-size: 0;
+}
+.clearfix {
+	display: block;/*the holly hack for a bug in IE6 for Windows*/
+}
+* html .clearfix {height: 1%;}/* Hides from IE-mac \*/
+/* END CLEARFIX*/
+.clear {
+	clear: both;
+}
