@@ -71,10 +71,43 @@ function POSTGET($param){
 	return "";
 }
 
-function getMssAccountInfo($url_mysolrserver, $url_extraparam, $mss_id, $mss_passwd) {
+function getMssAccountInfo($url_mysolrserver, $url_extraparam, $mss_id, $mss_passwd, $proxy, $proxyport, $proxyusername, $proxypassword) {
 	$url = $url_mysolrserver . '?action=accountgetinfo&name=' . $mss_id . '&passwd=' . $mss_passwd . '&type=wp' . $url_extraparam;
 	log_message("getMssAccountInfo - url = " . $url_mysolrserver);
-	$json = file_get_contents($url);
+
+	if ($proxy!='' && $proxyport!='') {
+
+		if ($proxyusername!='' && $proxypassword!='') {
+
+			// Encodage de l'autentification
+			$authProxy = base64_encode("$proxyusername:$proxypassword");
+			// Création des options de la requête
+			$opts = array(
+			'http' => array (
+			'method'=>'GET',
+			'proxy'=>"tcp://$proxy:$proxyport",
+			'request_fulluri' => true,
+			'header'=>"Proxy-Authorization: Basic $authProxy"
+			)
+			);
+		} else {
+				
+			// Création des options de la requête
+			$opts = array(
+			'http' => array (
+			'proxy'=>"tcp://$proxy:$proxyport",
+			'method'=>'GET',
+			'request_fulluri' => true
+			)
+			);
+		}
+		// Création du contexte de transaction
+		$ctx = stream_context_create($opts);
+		$json = file_get_contents($url,false,$ctx);
+
+	} else {
+		$json = file_get_contents($url);
+	}
 	log_message("getMssAccountInfo - json = " . $json);
 	return $json;
 }
@@ -219,7 +252,7 @@ function mss_build_document( $options, $post_info ) {
 			if (in_array($parent, $aTaxo)) {
 				$terms = get_the_terms( $post_info->ID, $parent );
 				if ((array) $terms === $terms) {
-					$parent =  strtolower(str_replace(' ', '_', $parent));		
+					$parent =  strtolower(str_replace(' ', '_', $parent));
 					foreach ($terms as $term) {
 						$doc->addField($parent . '_str', $term->name);
 						$doc->addField($parent . '_srch', $term->name);
@@ -285,14 +318,14 @@ function mss_post( $options, $documents, $commit = true, $optimize = false) {
 function mss_query( $qry, $offset, $count, $fq, $sortby, $options) {
 	$response = NULL;
 	$facet_fields = array();
-	//$options = mss_get_option();
+	$options = mss_get_option(); // uncommented in 2.0.3
 
 	$solr = new Mss_Solr();
 	if ($solr->connect($options, true)) {
 
 		$facets = $options['mss_facets'];
 		$aFacets = explode(',', $facets);
-		
+
 		foreach($aFacets as $facet_field) {
 			$facet_field_add = $facet_field . "_str";
 			if ($facet_field=='category') $facet_field_add = 'categories';
@@ -306,6 +339,33 @@ function mss_query( $qry, $offset, $count, $fq, $sortby, $options) {
 		$params = array();
 		$params['defType'] = 'dismax';
 		$params['qf'] = 'tagssrch^5 title^10 categoriessrch^5 content^3.5 comments^1.5'; // TODO : Add "_srch" custom fields ?
+		/*
+		2.0.3 change:
+		added this section to _srch versions for each custom field and each custom taxonomy that's checked in the plugin options area
+		*/
+		//$facet_search = $options['mss_facets_search'];
+		//if ($facet_search) {
+			$cust_array = array();
+			$aCustom = explode(',', $options["mss_custom_fields"]);
+			if (count($aCustom)>0) {
+				foreach($aCustom as $aCustom_item){
+					$cust_array[] = $aCustom_item . '_srch';
+				}
+			}
+			$aCustom = explode(',', $options["mss_custom_taxonomies"]);
+			if (count($aCustom)>0) {
+				foreach($aCustom as $aCustom_item){
+					$cust_array[] = $aCustom_item . '_srch';
+				}
+			}
+			if (count($cust_array)>0) {
+				foreach($cust_array as $custom_item){
+					$params['qf'] .= " $custom_item^3";
+				}
+			}
+		//}
+		/* end 2.0.3 change added section */
+		var_dump($params['qf']);
 		$params['pf'] = 'title^15 text^10';
 		$params['facet'] = 'true';
 		$params['facet.field'] = $facet_fields;

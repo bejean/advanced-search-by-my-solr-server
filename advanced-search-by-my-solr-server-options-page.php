@@ -85,6 +85,11 @@ $mss_id = $options['mss_id'];
 $mss_passwd = decrypt($options['mss_passwd']);
 $mss_url = $options['mss_url'];
 
+$mss_proxy = $options['mss_solr_proxy'];
+$mss_proxyport = $options['mss_solr_proxyport'];
+$mss_proxyusername = $options['mss_solr_proxyusername'];
+$mss_proxypassword = decrypt($options['mss_solr_proxypassword']);
+
 $account_plan='';
 $account_status='';
 $account_expire='';
@@ -95,7 +100,7 @@ global $url_extraparam ;
 $connected = false;
 
 if ($mss_id!='' && $mss_passwd!='') {
-	$account_info_json = getMssAccountInfo($url_mysolrserver, $url_extraparam, $mss_id, $mss_passwd);
+	$account_info_json = getMssAccountInfo($url_mysolrserver, $url_extraparam, $mss_id, $mss_passwd, $mss_proxy, $mss_proxyport, $mss_proxyusername, $mss_proxypassword);
 	$account_info = json_decode ($account_info_json, true);
 	//print_r($account_info);
 	if ($account_info['status']=='ok') {
@@ -110,6 +115,38 @@ $connect_type = $options['mss_connect_type'];
 if ($connect_type!="mysolrserver" && $connect_type!="selfhosted") $connect_type = "selfhosted";
 ?>		
 		<form id='mss_form'>
+
+		<h3><?php _e('Proxy setting - Optional (for http connection to Solr server) ', 'solrmss') ?></h3>
+		<table class="form-table">
+		    <tr valign="top">
+		        <th scope="row" style="width:200px; padding:0px;"><?php _e('Proxy address', 'solrmss') ?></th>
+		        <td style="float:left; margin-bottom:0px; padding:0px;">
+		        	<input type="text" id="mss_solr_proxy" name="settings[mss_solr_proxy]" value="<?php print($mss_proxy); ?>" />
+		        </td>
+			</tr>
+		    <tr valign="top">
+		        <td scope="row" style="width:200px; padding:0px;"><?php _e('Proxy port', 'solrmss') ?></th>
+		        <td style="float:left; margin-bottom:0px; padding:0px;">
+		        	<input type="text" id="mss_solr_proxyport" name="settings[mss_solr_proxyport]" value="<?php print($mss_proxyport); ?>" />
+		        </td>
+			</tr>
+		    <tr valign="top">
+		        <th scope="row" style="width:200px; padding:0px;"><?php _e('Proxy username (optional)', 'solrmss') ?></th>
+		        <td style="float:left; margin-bottom:0px; padding:0px;">
+		        	<input type="text" id="mss_solr_proxyusername" name="settings[mss_solr_proxyusername]" value="<?php print($mss_proxyusername); ?>" />
+		        </td>
+			</tr>
+		    <tr valign="top">
+		        <th scope="row" style="width:200px; padding:0px;"><?php _e('Proxy password (optional)', 'solrmss') ?></th>
+		        <td style="float:left; margin-bottom:0px; padding:0px;">
+		        	<input type="password" id="mss_solr_proxypassword" name="settings[mss_solr_proxypassword]" value="<?php print($mss_proxypassword); ?>" />
+		        </td>
+			</tr>
+					<tr>
+						<td class="label">&nbsp;</td>
+						<td><input class="button-primary" type="button" name="mss_btn_save_proxy" id="mss_btn_save_proxy" value="Apply Changes" /><span id="mss_save_proxy_status"></span></td>
+					</tr>
+			</table>
 
 		<h3><?php _e('Configure Solr', 'solrmss') ?></h3>
 		
@@ -354,6 +391,11 @@ none
 	        	</td>
 	        	<td scope="row" style="width:200px;">
 	        		<h4>Selected items for facets</h4>
+	        		<!--
+	        		<?php _e('Include these selected items in search scope', 'solrmss') ?>
+		            <input type="checkbox" name="settings[mss_facets_search]" value="1" <?php echo mss_checkCheckbox($options,'mss_facets_search'); ?> />
+	        		<br />&nbsp;
+	        		-->
 	        		<div id='selected_facets'></div>
  					<input type="hidden" id='mss_facets' name="settings[mss_facets]" value="<?php echo $options['mss_facets']; ?>" />  
 				</td>
