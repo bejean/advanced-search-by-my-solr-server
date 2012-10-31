@@ -365,7 +365,7 @@ function mss_query( $qry, $offset, $count, $fq, $sortby, $options) {
 			}
 		//}
 		/* end 2.0.3 change added section */
-		var_dump($params['qf']);
+		//var_dump($params['qf']);
 		$params['pf'] = 'title^15 text^10';
 		$params['facet'] = 'true';
 		$params['facet.field'] = $facet_fields;
