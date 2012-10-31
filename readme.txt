@@ -101,13 +101,10 @@ Advanced Search by My Solr Server pluginplugin was tested with:
 
 == Changelog ==
 
-<<<<<<< HEAD
 = 2.0.4 =
 
 * Search result display bug fix
 
-=======
->>>>>>> a92c98e592817aedf7ef2d5d6cde78ab6f241a40
 = 2.0.3 =
 
 * Bug fix jQuery conflict
