@@ -1,6 +1,6 @@
 <?php
 /*
- Plugin Name: Advanced Search by My Solr Server
+ Plugin Name: Advanced Search by www.mysolrserver.com
 Plugin URI: http://wordpress.org/extend/plugins/advanced-search-by-my-solr-server/
 Description: Indexes, removes, and updates documents in the Solr search engine.
 Version: 2.0.4
@@ -8,7 +8,7 @@ Author: www.mysolrserver.com
 Author URI: http://www.mysolrserver.com
 */
 /*
- Copyright (c) 2011 www.mysolrserver.com
+ Copyright (c) 2011-2013 www.mysolrserver.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

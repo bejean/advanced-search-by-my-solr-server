@@ -17,7 +17,7 @@ In order to make Advanced Search by My Solr Server plugin work, you need a Solr 
 If you don't have the time or resources to install, configure and maintain a Solr server, My Solr Server do it for you ! 
 
 
-= What is My Solr Server ? =
+= What is www.mysolrserver.com ? =
 
 My Solr Server is a Software as a Service Apache Solr enterprise search platform (http://www.mysolrserver.com). My Solr Server provides hosted instances of the Apache Solr server. 
 In a couple of minutes, you can create your own Solr server instance, manage it in our manager and integrate it with your favourite CMS by using its standard Solr plugin or module. Wordpress is one of the supported CMS.
