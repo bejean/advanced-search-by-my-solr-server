@@ -101,6 +101,10 @@ Advanced Search by My Solr Server pluginplugin was tested with:
 
 == Changelog ==
 
+= 2.0.5 =
+
+* Fix and schema.xml for Solr 4.x.x 
+
 = 2.0.4 =
 
 * Search result display bug fix
