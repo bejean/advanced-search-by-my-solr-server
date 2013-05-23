@@ -247,6 +247,18 @@ class Apache_Solr_Service
 
 		// check that our php version is >= 5.1.3 so we can correct for http_build_query behavior later
 		$this->_queryBracketsEscaped = version_compare(phpversion(), '5.1.3', '>=');
+		
+		$response = $this->system();
+		$ar = json_decode($response->getRawResponse(), true);
+		$this->version = $ar["lucene"]["solr-spec-version"];		
+	}
+	
+	public function getSolrVersion() {
+		return $this->version;
+	}
+	
+	public function getSolrVersionMajor() {
+		return $this->version{0};
 	}
 
 	/**
@@ -866,7 +878,11 @@ class Apache_Solr_Service
 		$flushValue = $waitFlush ? 'true' : 'false';
 		$searcherValue = $waitSearcher ? 'true' : 'false';
 
-		$rawPost = '<commit expungeDeletes="' . $expungeValue . '" waitFlush="' . $flushValue . '" waitSearcher="' . $searcherValue . '" />';
+		$rawPost = '<commit expungeDeletes="' . $expungeValue . '" ';
+ 		if (intval($this->getSolrVersionMajor())<=3) {
+			$rawPost .= 'waitFlush="' . $flushValue . '" '; 
+		}
+		$rawPost .= 'waitSearcher="' . $searcherValue . '" />';
 
 		return $this->_sendRawPost($this->_updateUrl, $rawPost, $timeout);
 	}
@@ -1161,7 +1177,11 @@ class Apache_Solr_Service
 		$flushValue = $waitFlush ? 'true' : 'false';
 		$searcherValue = $waitSearcher ? 'true' : 'false';
 
-		$rawPost = '<optimize waitFlush="' . $flushValue . '" waitSearcher="' . $searcherValue . '" />';
+		$rawPost = '<optimize ';
+		if (intval($this->getSolrVersionMajor())<=3) {
+			$rawPost .= 'waitFlush="' . $flushValue . '" '; 
+		}
+		$rawPost .= 'waitSearcher="' . $searcherValue . '" />';
 
 		return $this->_sendRawPost($this->_updateUrl, $rawPost, $timeout);
 	}
