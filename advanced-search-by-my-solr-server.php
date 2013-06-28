@@ -850,6 +850,11 @@ function mss_search_results() {
 				foreach ( $response->docs as $doc ) {
 					$resultinfo = array();
 					$docid = strval($doc->id);
+
+					foreach ( $doc as $key=>$value ) {
+						$resultinfo[$key] = $value;
+					}
+
 					$resultinfo['permalink'] = $doc->permalink;
 					$resultinfo['title'] = $doc->title;
 					$resultinfo['author'] = $doc->author;

@@ -66,20 +66,8 @@ function mss_checkConnectOption($optionType, $connectType) {
  <div class="wrap">
   	<div id="icon-options-general" class="icon32"><br /></div>
 	<div id="mss_admin">
-
   		<h2>Advanced Search by My Solr Server Settings</h2>
-
 		<p><strong>Advanced Search by My Solr Server</strong> plugin replaces the default WordPress search with powerfull <strong>Solr search</strong>.</p>
-
-<!--  
-		<p><a href='http://wordpress.org/extend/plugins/solr-for-wordpress/' target='_mss'>Solr for Wordpress plugin</a> have to be installed prior to use 
-		<a href='http://www/mysolrserver.com/' target='_mss'>My Solr Server</a> plugin. <strong>Solr for Wordpress</strong> plugin replaces the default WordPress search with Solr search.</p>
-
-		<p><strong>Solr for Wordpress plugin</strong> requieres you to install <a href='http://lucene.apache.org/solr/' target='_mss'>Solr</a>. If you don't 
-		have the time or resources to install, configure and maintain <strong>Solr</strong>, <a href='http://www/mysolrserver.com/' target='_mss'>My Solr Server</a> can host it for you !</p>
-
-		<p>Before setting up <strong>My Solr Server plugin</strong>, you need to <a href='http://manager.mysolrserver.com/account.php' target='_mss'>create an account on My Solr Server</a> (one month free trial).</p>
--->		
 <?php 
 $mss_id = $options['mss_id'];
 $mss_passwd = decrypt($options['mss_passwd']);
@@ -154,6 +142,7 @@ if ($connect_type!="mysolrserver" && $connect_type!="selfhosted") $connect_type 
 			<div class="solr_adminR">
 							
 				<div class="solr_adminR2">
+<!--
 				<div id="solr_admin_tab_mysolrserver">
 		
 					<h3><?php _e('My Solr Server account connexion', 'mss') ?></h3>
@@ -225,6 +214,7 @@ if ($account_plan!="") {
 ?>
 					<hr />		
 				</div>
+-->
 				<div id="solr_admin_tab_selfhosted">
 					<h3><?php _e('Solr instance settings', 'mss') ?></h3>
 					<label><?php _e('Solr Host', 'solrmss') ?></label>
@@ -239,6 +229,7 @@ if ($account_plan!="") {
 				</div>
 				</div>
 			</div>
+<!-- 
 			<ol>
 				<li id="solr_admin_tab_top_btn" class="solr_admin_tab_top">
 				Select the rigth option according to your Solr Server hosting configuration
@@ -257,6 +248,7 @@ if ($account_plan!="") {
 				</li>
 				<li id="solr_admin_tab_bottom_btn" class="solr_admin_tab_bottom"></li>
 			</ol>
+-->
 		</div>
 		<hr />	
 		

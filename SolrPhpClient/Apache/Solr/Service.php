@@ -117,6 +117,7 @@ class Apache_Solr_Service
 	const PING_SERVLET = 'admin/ping';
 	const UPDATE_SERVLET = 'update';
 	const SEARCH_SERVLET = 'select';
+	const ELEVATE_SERVLET = 'elevate';
 	const SYSTEM_SERVLET = 'admin/system';
 	const THREADS_SERVLET = 'admin/threads';
 	const EXTRACT_SERVLET = 'update/extract';
@@ -165,7 +166,7 @@ class Apache_Solr_Service
 	 *
 	 * @var string
 	 */
-	protected $_pingUrl, $_updateUrl, $_searchUrl, $_systemUrl, $_threadsUrl;
+	protected $_pingUrl, $_updateUrl, $_searchUrl, $_elevateUrl, $_systemUrl, $_threadsUrl;
 
 	/**
 	 * Keep track of whether our URLs have been constructed
@@ -298,6 +299,7 @@ class Apache_Solr_Service
 		$this->_extractUrl = $this->_constructUrl(self::EXTRACT_SERVLET);
 		$this->_pingUrl = $this->_constructUrl(self::PING_SERVLET);
 		$this->_searchUrl = $this->_constructUrl(self::SEARCH_SERVLET);
+		$this->_elevateUrl = $this->_constructUrl(self::ELEVATE_SERVLET);
 		$this->_systemUrl = $this->_constructUrl(self::SYSTEM_SERVLET, array('wt' => self::SOLR_WRITER));
 		$this->_threadsUrl = $this->_constructUrl(self::THREADS_SERVLET, array('wt' => self::SOLR_WRITER ));
 		$this->_updateUrl = $this->_constructUrl(self::UPDATE_SERVLET, array('wt' => self::SOLR_WRITER ));
@@ -1227,13 +1229,76 @@ class Apache_Solr_Service
 
 		$queryString = $this->_generateQueryString($params);
 
+		if (!empty($params['qt'])) {
+			$url = $this->_constructUrl($params['qt']);
+			unset($params['qt']);				
+		} else {
+			$url = $this->_searchUrl;
+		}
+		
 		if ($method == self::METHOD_GET)
 		{
-			return $this->_sendRawGet($this->_searchUrl . $this->_queryDelimiter . $queryString);
+			return $this->_sendRawGet($url . $this->_queryDelimiter . $queryString);
 		}
 		else if ($method == self::METHOD_POST)
 		{
-			return $this->_sendRawPost($this->_searchUrl, $queryString, FALSE, 'application/x-www-form-urlencoded; charset=UTF-8');
+			return $this->_sendRawPost($url, $queryString, FALSE, 'application/x-www-form-urlencoded; charset=UTF-8');
+		}
+		else
+		{
+			throw new Apache_Solr_InvalidArgumentException("Unsupported method '$method', please use the Apache_Solr_Service::METHOD_* constants");
+		}
+	}
+	
+	/**
+	 * Simple Elevate interface
+	 *
+	 * @param string $query The raw query string
+	 * @param int $offset The starting offset for result documents
+	 * @param int $limit The maximum number of result documents to return
+	 * @param array $params key / value pairs for other query parameters (see Solr documentation), use arrays for parameter keys used more than once (e.g. facet.field)
+	 * @param string $method The HTTP method (Apache_Solr_Service::METHOD_GET or Apache_Solr_Service::METHOD::POST)
+	 * @return Apache_Solr_Response
+	 *
+	 * @throws Apache_Solr_HttpTransportException If an error occurs during the service call
+	 * @throws Apache_Solr_InvalidArgumentException If an invalid HTTP method is used
+	 */
+	public function elevate($query, $params = array(), $method = self::METHOD_GET)
+	{
+			// ensure params is an array
+		if (!is_null($params))
+		{
+			if (!is_array($params))
+			{
+				// params was specified but was not an array - invalid
+				throw new Apache_Solr_InvalidArgumentException("\$params must be a valid array or null");
+			}
+		}
+		else
+		{
+			$params = array();
+		}
+		
+		// construct our full parameters
+	
+		// common parameters in this interface
+		$params['wt'] = self::SOLR_WRITER;
+		$params['json.nl'] = $this->_namedListTreatment;
+	
+		$params['q'] = $query;
+		$params['enableElevation'] = 'true';
+		//$params['exclusive'] = 'true';
+		//$params['debugQuery'] = 'true';
+		
+		$queryString = $this->_generateQueryString($params);
+	
+		if ($method == self::METHOD_GET)
+		{
+			return $this->_sendRawGet($this->_elevateUrl . $this->_queryDelimiter . $queryString);
+		}
+		else if ($method == self::METHOD_POST)
+		{
+			return $this->_sendRawPost($this->_elevateUrl, $queryString, FALSE, 'application/x-www-form-urlencoded; charset=UTF-8');
 		}
 		else
 		{

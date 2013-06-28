@@ -364,6 +364,12 @@ function mss_query( $qry, $offset, $count, $fq, $sortby, $options) {
 				}
 			}
 		//}
+					
+		if (empty($qry) || $qry=='*' || $qry=='*:*') {
+			$params['q.alt']="*:*";
+			$qry = '';
+		}
+				
 		/* end 2.0.3 change added section */
 		//var_dump($params['qf']);
 		$params['pf'] = 'title^15 text^10';
@@ -382,7 +388,8 @@ function mss_query( $qry, $offset, $count, $fq, $sortby, $options) {
 		$params['spellcheck.collate'] = 'true';
 		$params['spellcheck.count'] = '1';
 		$params['spellcheck'] = 'true';
-
+		//$params['debug'] = 'true';
+		
 		//if ($facet_on_tags) {
 		//	$number_of_tags = $options['mss_max_display_tags'];
 		//	$params['f.tags.facet.limit'] = $number_of_tags;

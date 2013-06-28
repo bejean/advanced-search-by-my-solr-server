@@ -78,8 +78,9 @@ div#mss_admin td.label {
 }
 .solr_adminR {
 	background: #ffffff;
-	float: right;
+	/*float: right;
 	width: 65%;
+	*/
 }
 
 li.solr_admin_on {
@@ -100,12 +101,14 @@ li.solr_admin_on li {
 
 .solr_adminR1, .solr_adminR2 {
 	border: 1px solid #cccccc;
+	/*
 	-moz-border-radius-topright:6px;
 	-moz-border-radius-bottomright:6px;
 	-moz-border-radius-bottomleft:6px;
 	-webkit-border-top-right-radius:6px;
 	-webkit-border-bottom-right-radius:6px;
 	-webkit-border-bottom-left-radius:6px;
+	*/
 	padding: 12px 12px;
 }
 
